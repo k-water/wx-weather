@@ -1,0 +1,3 @@
+<view class="wx-test">
+  <test class="header">header</test>
+</view>
