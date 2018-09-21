@@ -1,5 +1,5 @@
 wx.cloud.init({
-  env: 'dev'
+  env: 'dev-1997db'
 })
 
 export const test = () => {
