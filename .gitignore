@@ -134,3 +134,4 @@ fabric.properties
 yarn.lock
 
 /client/lib/api-config.js
+/server/config.js

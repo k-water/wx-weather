@@ -4,7 +4,7 @@ const {
   PORT
 } = require('../config.server.json')
 
-const test = require('./cloud-functions/test/').main
+const heWeather = require('./cloud-functions/he-weather/').main
 
 const app = express()
 
@@ -15,6 +15,15 @@ app.use(
     maxAge: '30d'
   })
 )
+
+app.get('/api/he-weather', (req, res, next) => {
+  heWeather(req.query)
+    .then(res.json.bind(res))
+    .catch((e) => {
+      console.error(e)
+      next(e)
+    })
+})
 
 app.get('/api/test', (req, res, next) => {
   test(req.query)
