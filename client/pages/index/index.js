@@ -1,7 +1,12 @@
+import {
+  geocoder
+} from '../../lib/api'
+
 Page({
   data: {
     backgroundImage: '../../images/cloud.jpg',
     backgroundColor: '#62aadc',
+    statusBarHeight: 32,
     "air": {
       "status": 0,
       "aqi": "77",
@@ -66,28 +71,174 @@ Page({
       // ...
     ]
   },
-  onLoad: function (options) {
-    // 生命周期函数--监听页面加载
+
+  /**
+   * 处理逆地址
+   * @param {*} lat
+   * @param {*} lon
+   * @param {*} name
+   */
+  getAddress(lat, lon, name) {
+    wx.showLoading({
+      title: '定位中',
+      mask: true
+    })
+
+    let fail = e => {
+      this.setData({
+        address: name || '广州市天河区五山路华南农业大学'
+      })
+      wx.hideLoading()
+
+      this.getWeatherData()
+    }
+
+    geocoder(
+      lat,
+      lon,
+      res => {
+        wx.hideLoading()
+        let result = (res.data || {}).result
+
+        if (res.statusCode === 200 && result && result.address) {
+          let {
+            address,
+            formatted_addresses,
+            address_component
+          } = result
+
+          if (formatted_addresses && (formatted_addresses.recommend || formatted_addresses.rough)) {
+            address = formatted_addresses.recommend || formatted_addresses.rough
+          }
+
+          let {
+            province,
+            city,
+            district: county
+          } = address_component
+          this.setData({
+            province,
+            county,
+            city,
+            address: name || address
+          })
+
+          this.getWeatherData()
+        } else {
+          fail()
+        }
+      },
+      fail
+    )
+
   },
-  onReady: function () {
+
+  /**
+   * 更新地址
+   * @param {*} res
+   */
+  updateLocation(res) {
+    let {
+      latitude: lat,
+      longitude: lon,
+      name
+    } = res
+    let data = {
+      lat,
+      lon
+    }
+    if (name) {
+      data.address = name
+    }
+    this.setData(data)
+    this.getAddress(lat, lon, name)
+  },
+
+  /**
+   * 获取经纬度
+   */
+  getLocation() {
+    wx.getLocation({
+      type: 'gcj02', // 默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标
+      success: this.updateLocation,
+      fail: e => {
+        this.openLocation()
+      }
+    })
+  },
+
+  /**
+   * 打开地理位置授权
+   */
+  openLocation() {
+    wx.showToast({
+      title: '检测到您未授权使用位置权限，请先开启哦',
+      icon: 'none',
+      duration: 3000
+    })
+  },
+
+  /**
+   * 重新选择地理位置
+   */
+  chooseLocation() {
+    wx.chooseLocation({
+      success: (res) => {
+        let {
+          latitude,
+          longitude
+        } = res
+        let {
+          lat,
+          lon
+        } = this.data
+        if (latitude == lat && lon == longitude) {
+          this.getWeatherData()
+        } else {
+          this.updateLocation(res)
+        }
+      }
+    })
+  },
+
+  getWeatherData() {
+
+  },
+
+  onLoad() {
+    // 生命周期函数--监听页面加载
+    wx.getSystemInfo({
+      success: (res) => {
+        let width = res.windowWidth
+        let scale = width / 375
+        this.setData({
+          width,
+          scale,
+          paddingTop: res.statusBarHeight + 12
+        })
+      }
+    })
+    this.getLocation()
+  },
+  onReady() {
     // 生命周期函数--监听页面初次渲染完成
   },
-  onShow: function () {
+  onShow() {
     // 生命周期函数--监听页面显示
   },
-  onHide: function () {
+  onHide() {
     // 生命周期函数--监听页面隐藏
   },
-  onUnload: function () {
+  onUnload() {
     // 生命周期函数--监听页面卸载
   },
-  onPullDownRefresh: function () {
+  onPullDownRefresh() {
     // 页面相关事件处理函数--监听用户下拉动作
   },
-  onReachBottom: function () {
+  onReachBottom() {
     // 页面上拉触底事件的处理函数
   },
-  onShareAppMessage: function () {
+  onShareAppMessage() {
     // 用户点击右上角分享
     return {
       title: 'title', // 分享标题

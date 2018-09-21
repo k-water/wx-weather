@@ -6,7 +6,7 @@
     <view class="now">
       <!--当前实时天气和空气质量-->
       <view class="location" bindtap="chooseLocation">
-        <icon type="dingwei" size="" color="" />
+        <icon type="dingwei"/>
         <text>{{ address }}</text>
       </view>
 
