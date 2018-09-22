@@ -9,7 +9,28 @@ export const getWeather = (lat, lon) => {
         lon
       },
       success: (res) => {
-        resolve({result: res.data})
+        resolve({
+          result: res.data
+        })
+      },
+      fail: (e) => {
+        reject(e)
+      }
+    })
+  })
+}
+
+export const getAir = (city) => {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url: 'http://127.0.0.1:3000/api/he-air',
+      data: {
+        city
+      },
+      success: (res) => {
+        resolve({
+          result: res.data
+        })
       },
       fail: (e) => {
         reject(e)

@@ -66,7 +66,7 @@
   <view class="weather" style="background-color: {{backgroundColor}}">
     <view class="container">
       <!--24小时天气-->
-      <scroll-view scroll-x class="hourly">
+      <scroll-view scroll-x="true" class="hourly">
         <view class="scrollX">
           <view class="item" wx:for="{{hourlyData}}" wx:key="{{item.time}}">
             <text class="time"> {{item.time}} </text>
@@ -115,7 +115,7 @@
     </view>
   </view>
   <view class="source">
-    <text wx:if="{{oneWord===''}}">· 如果没有阳光，就在心里点一只蜡烛 ·</text>
+    <text wx:if="{{oneWord ===''}}">· 如果没有阳光，就在心里点一只蜡烛 ·</text>
     <text wx:else>{{oneWord}}</text>
   </view>
 </view>

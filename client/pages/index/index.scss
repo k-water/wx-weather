@@ -21,6 +21,7 @@
 }
 
 $grid-margin: 20rpx;
+
 .container {
   margin-bottom: $grid-margin;
   max-width: 750rpx;
@@ -39,6 +40,7 @@ $grid-margin: 20rpx;
     border-radius: 20rpx 0 0 20rpx;
     padding: 10rpx 20rpx;
     z-index: 9999999;
+
     icon {
       font-size: 28rpx;
     }
@@ -77,6 +79,7 @@ icon {
       margin-right: 4rpx;
     }
   }
+
   .air-quality {
     position: absolute;
     top: auto;
@@ -98,6 +101,7 @@ icon {
       vertical-align: middle;
       border-radius: 4rpx;
     }
+
     .value {
       vertical-align: middle;
     }
@@ -112,9 +116,11 @@ icon {
     transform: translateY(-50%);
     line-height: 1;
   }
+
   .temp {
     margin-bottom: 10rpx;
   }
+
   .temp text {
     color: #fff;
     font-weight: lighter;
@@ -123,21 +129,26 @@ icon {
     display: inline-block;
     vertical-align: top;
   }
+
   .temp text.degree {
     font-size: 80rpx;
   }
+
   .cur-weather {
     font-size: 32rpx;
     margin-bottom: 40rpx;
     line-height: 1;
     position: relative;
+
     icon {
       font-size: 32rpx;
       margin-right: 10rpx;
     }
+
     .inline {
       margin-bottom: 30rpx;
       font-size: 32rpx;
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -145,6 +156,7 @@ icon {
 
     .today {
       @include flex-row;
+
       .item {
         display: block;
         padding-right: 16rpx;
@@ -153,6 +165,7 @@ icon {
         font-size: 28rpx;
         flex: 1;
         text-align: right;
+
         &:last-child {
           text-align: left;
           border: none;
@@ -171,6 +184,7 @@ icon {
   padding: $gap 0; // background: rgba(0, 0, 0, .1);
   overflow: hidden;
   width: 100%;
+
   .item {
     // height: 104rpx;
     font-size: 28rpx;
@@ -178,20 +192,26 @@ icon {
     padding: 0 40rpx;
     width: 50%;
     border-right: 2rpx solid rgba(255, 255, 255, .4);
+
     &:last-child {
       border-right: none;
     }
+
     .top {
       height: 24rpx;
       margin-bottom: 26rpx;
       margin-right: -20rpx;
     }
+
     .date {
       float: left;
     }
+
     .temp {
       float: right;
-    } // bottom
+    }
+
+    // bottom
     .bottom {
       height: 44rpx text {
         float: left;
@@ -199,6 +219,7 @@ icon {
         line-height: 44rpx;
       }
     }
+
     icon {
       float: right;
       font-size: 44rpx;
@@ -211,6 +232,7 @@ icon {
 // 详细天气
 .weather {
   background-color: #62aadc;
+
   .container {
     background: rgba(0, 0, 0, .1);
     overflow: hidden;
@@ -220,6 +242,7 @@ icon {
 
 //hourly
 .hourly {
+
   // width: 1500rpx;
   .scrollX {
     // @include flex-row;
@@ -228,18 +251,21 @@ icon {
     padding: 40rpx 0;
     height: 150rpx;
   }
+
   .item {
     @include flex-column;
     text-align: center;
     width: 116rpx;
     float: left;
   }
+
   .time,
   .temp {
     line-height: 24rpx;
     height: 28rpx;
     position: relative;
   }
+
   icon {
     font-size: 48rpx;
     margin: 20rpx auto 30rpx;
@@ -251,19 +277,24 @@ icon {
   position: relative;
   padding: 40rpx 0;
   min-height: 200rpx;
+
   .week-weather {
     @include flex-row;
     text-align: center;
+
     .item:first-child {
       color: #e0e0e0;
     }
+
     .item {
       flex: 1;
+
       .day,
       .date,
       .wind {
         color: #efefef;
       }
+
       .wind {
         font-size: 24rpx;
         line-height: 24rpx;
@@ -272,20 +303,25 @@ icon {
         margin: 0 auto 12rpx;
         overflow: hidden;
       }
+
       .date {
         margin: 10rpx 0 30rpx;
         font-size: 24rpx;
       }
+
       .wt {
         margin-bottom: 30rpx;
         font-size: 24rpx;
       }
+
       .night {
         margin-top: 272rpx;
       }
+
       .night .wt {
         margin: 32rpx 0 30rpx;
       }
+
       icon.img {
         font-size: 38rpx;
         display: block;
@@ -293,6 +329,7 @@ icon {
       }
     }
   }
+
   .week-chart {
     position: absolute;
     left: 0;
@@ -300,6 +337,7 @@ icon {
     height: 272rpx;
     top: 262rpx; // background: white;
   }
+
   .week-chart canvas {
     width: 750rpx;
     height: 272rpx;
@@ -321,16 +359,19 @@ icon {
     box-sizing: border-box;
     padding: 50rpx 0 0;
   }
+
   .content {
     font-size: 36rpx;
     margin-top: 20rpx;
   }
+
   .title {
     icon {
       font-size: 24rpx;
       margin-right: 10rpx;
       margin-top: -2rpx;
     }
+
     color: #fff;
     opacity: 0.7;
     font-size: 24rpx;

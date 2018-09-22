@@ -1,6 +1,10 @@
 const path = require('path')
 const crypto = require('crypto')
+/*<remove trigger="prod">*/
 const config = require('../config')
+/*</remove>*/
+
+/*<jdists import="../config.js" />*/
 
 /*<remove trigger="prod">*/
 const STATIC_SERVER_URL = 'http://127.0.0.1:3000/static'

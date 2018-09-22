@@ -1,9 +1,26 @@
+/*<remove trigger="prod">*/
 import {
   geocoder
 } from '../../lib/api'
 import {
-  getWeather
+  getWeather,
+  getAir
 } from '../../lib/api-mock'
+/*</remove>*/
+
+/*<jdists trigger="prod">
+import { geocoder, getWeather, getAir} from '../../lib/api'
+</jdists>*/
+import {
+  fixChart,
+  getChartConfig,
+  drawEffect
+} from '../../lib/utils'
+import Chart from '../../lib/chartjs/chart'
+
+let effectInstance
+const EFFECT_CANVAS_HEIGHT = 768 / 2
+const CHART_CANVAS_HEIGHT = 272 / 2
 Page({
   data: {
     backgroundImage: '../../images/cloud.jpg',
@@ -61,6 +78,8 @@ Page({
       city,
       county
     } = this.data
+
+    //获取天气信息
     getWeather(lat, lon)
       .then((res) => {
         wx.hideLoading()
@@ -68,13 +87,23 @@ Page({
           cb()
         }
         if (res.result) {
-          console.log(res.result)
           this.render(res.result)
         } else {
           fail()
         }
       })
       .catch(fail)
+
+    // 获取空气质量
+    getAir(city)
+      .then((res) => {
+        if (res && res.result) {
+          this.setData({
+            air: res.result
+          })
+        }
+      })
+      .catch((e) => {})
 
   },
 
@@ -264,6 +293,14 @@ Page({
       oneWord,
       lifeStyle
     })
+
+    this.stopEffect()
+
+    if (effect && effect.name) {
+      effectInstance = drawEffect('effect', effect.name, width, EFFECT_CANVAS_HEIGHT * scale, effect.amount)
+    }
+    // 延时画图
+    this.drawChart()
   },
   onReady() {
     // 生命周期函数--监听页面初次渲染完成
@@ -293,5 +330,46 @@ Page({
       desc: 'desc', // 分享描述
       path: 'path' // 分享路径
     }
+  },
+
+  stopEffect() {
+    if (effectInstance && effectInstance.clear) {
+      effectInstance.clear()
+    }
+  },
+
+  drawChart() {
+    const {
+      width,
+      scale,
+      weeklyData
+    } = this.data
+    let height = CHART_CANVAS_HEIGHT * scale
+    let ctx = wx.createCanvasContext('chart')
+    fixChart(ctx, width, height)
+
+    // 添加温度
+    Chart.pluginService.register({
+      afterDatasetsDraw(e, t) {
+        ctx.setTextAlign('center')
+        ctx.setTextBaseline('middle')
+        ctx.setFontSize(16)
+
+        e.data.datasets.forEach((t, a) => {
+          let r = e.getDatasetMeta(a)
+          r.hidden ||
+            r.data.forEach((e, r) => {
+              // 昨天数据发灰
+              ctx.setFillStyle(r === 0 ? '#e0e0e0' : '#ffffff')
+
+              let i = t.data[r].toString() + '\xb0'
+              let o = e.tooltipPosition()
+              0 == a ? ctx.fillText(i, o.x + 2, o.y - 8 - 10) : 1 == a && ctx.fillText(i, o.x + 2, o.y + 8 + 10)
+            })
+        })
+      }
+    })
+
+    return new Chart(ctx, getChartConfig(weeklyData))
   }
 })

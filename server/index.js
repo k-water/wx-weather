@@ -5,6 +5,7 @@ const {
 } = require('../config.server.json')
 
 const heWeather = require('./cloud-functions/he-weather/').main
+const heAir = require('./cloud-functions/he-air').main
 
 const app = express()
 
@@ -18,6 +19,15 @@ app.use(
 
 app.get('/api/he-weather', (req, res, next) => {
   heWeather(req.query)
+    .then(res.json.bind(res))
+    .catch((e) => {
+      console.error(e)
+      next(e)
+    })
+})
+
+app.get('/api/he-air', (req, res, next) => {
+  heAir(req.query)
     .then(res.json.bind(res))
     .catch((e) => {
       console.error(e)
