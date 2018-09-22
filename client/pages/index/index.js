@@ -68,8 +68,8 @@ Page({
           cb()
         }
         if (res.result) {
-          // console.log(res.result)
-          // this.render(res.result)
+          console.log(res.result)
+          this.render(res.result)
         } else {
           fail()
         }
@@ -221,6 +221,49 @@ Page({
       }
     })
     this.getLocation()
+  },
+  render(data) {
+    const {
+      width,
+      scale
+    } = this.data
+    const {
+      hourly,
+      daily,
+      current,
+      lifeStyle,
+      oneWord = '',
+      effect
+    } = data
+    const {
+      backgroundColor,
+      backgroundImage
+    } = current
+
+    const _today = daily[0],
+      _tomorrow = daily[1]
+    const today = {
+      temp: `${_today.minTemp}/${_today.maxTemp}°`,
+      icon: _today.dayIcon,
+      weather: _today.day
+    }
+    const tomorrow = {
+      temp: `${_tomorrow.minTemp}/${_tomorrow.maxTemp}°`,
+      icon: _tomorrow.dayIcon,
+      weather: _tomorrow.day
+    }
+
+    this.setData({
+      hourlyData: hourly,
+      weeklyData: daily,
+      current,
+      backgroundImage,
+      backgroundColor,
+      today,
+      tomorrow,
+      oneWord,
+      lifeStyle
+    })
   },
   onReady() {
     // 生命周期函数--监听页面初次渲染完成

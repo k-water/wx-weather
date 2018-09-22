@@ -45,11 +45,8 @@ const $ = {
       .join('&') + config.weather.key
     return crypto.createHash('md5').update(data).digest('base64')
   },
-  getWeatherImage(code, isNight) {
-    return WEATHER_IMAGE_PERFIXER + '/' + path.join(isNight ? 'night' : 'day', `${code}.svg`)
-  },
   getBackgroundImage(weather, isNight) {
-    return BACKGROUND_PERFIXER + '/' + path.join(isNight ? 'night' : 'day', `${weather}.jpg`)
+    return BACKGROUND_PERFIXER + '/' + (isNight ? 'night' : 'day/') + `${weather}.jpg`
   },
   timeFormat(pattern = 'YYYY-MM-DD', d) {
     if (!(d instanceof Date)) {
@@ -461,7 +458,7 @@ const $ = {
         effect: $.getEffectSettings(now.cond_code),
         oneWord: $.getOneWord(now.cond_code),
         current: $._now(now, result),
-        // hourly: $._hourly(hourly, result),
+        hourly: $._hourly(hourly, result),
         lifeStyle: $._lifestyle(lifestyle),
         daily: $._daily(daily_forecast, result)
       }

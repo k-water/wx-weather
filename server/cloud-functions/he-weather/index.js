@@ -22,7 +22,6 @@ exports.main = async event => {
     query.push(`${i}=${encodeURIComponent(params[i])}`)
   }
   let url = API_URL + '?' + query.join('&')
-  console.log(url)
 
   return new Promise((resolve, reject) => {
     request.get(url, (error, response, body) => {
@@ -30,8 +29,7 @@ exports.main = async event => {
         reject(error)
       } else {
         try {
-          // let res = $.handlerData(JSON.parse(body))
-          let res = JSON.parse(body)
+          let res = $.handlerData(JSON.parse(body))
           resolve(res)
         } catch (error) {
           reject(error)

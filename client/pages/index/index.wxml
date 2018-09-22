@@ -63,14 +63,14 @@
       </view>
     </view>
   </view>
-  <view class="weather">
+  <view class="weather" style="background-color: {{backgroundColor}}">
     <view class="container">
       <!--24小时天气-->
       <scroll-view scroll-x class="hourly">
         <view class="scrollX">
           <view class="item" wx:for="{{hourlyData}}" wx:key="{{item.time}}">
             <text class="time"> {{item.time}} </text>
-            <icon type="{{item.type}}" class="icon"></icon>
+            <icon type="{{item.icon}}" class="icon"></icon>
             <text class="temp"> {{item.temp}}° </text>
           </view>
         </view>
@@ -80,21 +80,19 @@
       <view class="week">
         <!--7天天气-->
         <view class="week-weather">
-          <view class="item" wx:for="{{weeklyData}}" wx:key="{{item.day}}">
-            <view class="day"> {{ utils.formatWeeklyDate(index) }} </view>
-            <view class="date"> {{utils.formatDate(item.time)}} </view>
+          <view class="item" wx:for="{{weeklyData}}" wx:key="{{item.time}}">
+            <view class="day">{{ utils.formatWeeklyDate(index) }}</view>
+            <view class="date">{{ utils.formatDate(item.time) }}</view>
             <view class="daytime">
-              <view class="wt"> {{item.day}} </view>
+              <view class="wt">{{ item.day }}</view>
               <icon type="{{item.dayIcon}}" class="img"></icon>
             </view>
             <view class="night">
               <icon type="{{item.nightIcon}}" class="img"></icon>
-              <view class="wt"> {{item.night}} </view>
+              <view class="wt">{{ item.night }}</view>
             </view>
-            <view class="wind"> {{utils.wind(item.nightWind)}} </view>
-            <view class="wind" wx:if="{{item.nightWind}}">
-              {{utils.windLevel(item.nightWindLevel)}}
-            </view>
+            <view class="wind">{{ utils.wind(item.nightWind) }}</view>
+            <view class="wind" wx:if="{{item.nightWind}}">{{ utils.windLevel(item.nightWindLevel) }}</view>
             <view class="wind" wx:else></view>
           </view>
         </view>
