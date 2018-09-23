@@ -19,6 +19,7 @@ import {
 import Chart from '../../lib/chartjs/chart'
 
 let effectInstance
+let isUpdate = false
 const EFFECT_CANVAS_HEIGHT = 768 / 2
 const CHART_CANVAS_HEIGHT = 272 / 2
 Page({
@@ -249,9 +250,31 @@ Page({
         })
       }
     })
-    this.getLocation()
+
+    const pages = getCurrentPages() //获取加载的页面
+    const currentPage = pages[pages.length - 1] //获取当前页面的对象
+    const query = currentPage.options
+
+    if (query && query.address && query.lat && query.lon) {
+      this.setData({
+          city,
+          province,
+          county,
+          address,
+          lat,
+          lon
+        },
+        () => {
+          this.getWeatherData()
+        }
+      )
+    } else {
+      this.getLocation()
+    }
+
   },
   render(data) {
+    isUpdate = true
     const {
       width,
       scale
@@ -302,33 +325,39 @@ Page({
     // 延时画图
     this.drawChart()
   },
-  onReady() {
-    // 生命周期函数--监听页面初次渲染完成
-  },
-  onShow() {
-    // 生命周期函数--监听页面显示
-  },
-  onHide() {
-    // 生命周期函数--监听页面隐藏
-  },
-  onUnload() {
-    // 生命周期函数--监听页面卸载
-  },
+
   onPullDownRefresh() {
     // 页面相关事件处理函数--监听用户下拉动作
     this.getWeatherData(() => {
       wx.stopPullDownRefresh()
     })
   },
-  onReachBottom() {
-    // 页面上拉触底事件的处理函数
-  },
+
+
   onShareAppMessage() {
     // 用户点击右上角分享
-    return {
-      title: 'title', // 分享标题
-      desc: 'desc', // 分享描述
-      path: 'path' // 分享路径
+    // 如果获取数据失败，则没有位置和天气信息，那么需要个默认文案
+    if (!isUpdate) {
+      return {
+        title: '我发现一个好玩的天气小程序，分享给你看看！',
+        path: '/pages/index/index'
+      }
+    } else {
+      // 如果有天气信息，那么需要给 path 加上天气信息
+      const {
+        lat,
+        lon,
+        address,
+        province,
+        city,
+        county
+      } = this.data
+      let url = `/pages/index/index?lat=${lat}&lon=${lon}&address=${address}&province=${province}&city=${city}&county=${county}`
+
+      return {
+        title: `「${address}」现在天气情况，快打开看看吧！`,
+        path: url
+      }
     }
   },
 

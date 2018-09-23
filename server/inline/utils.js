@@ -11,7 +11,7 @@ const STATIC_SERVER_URL = 'http://127.0.0.1:3000/static'
 /*</remove>*/
 
 /*<jdists trigger="prod">
-const STATIC_SERVER_URL = 'https://tianqi-1d3bf9.tcb.qcloud.la'
+const STATIC_SERVER_URL = 'https://6465-dev-1997db-1257647267.tcb.qcloud.la'
 </jdists>*/
 
 const BACKGROUND_PERFIXER = `${STATIC_SERVER_URL}/bg`
